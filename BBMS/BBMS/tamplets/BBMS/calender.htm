@@ -1,0 +1,23 @@
+{% extends 'base.html' %} 
+Select Date
+
+{% block content %}
+<h2>📅 Select a Date for Your Meeting</h2>
+
+<input type="date" id="datePicker" onchange="navigateToSlots(this.value)">
+
+<script>
+    function navigateToSlots(dateString) {
+        if (!dateString) return;
+
+        // DateString format will be "YYYY-MM-DD"
+        const [year, month, day] = dateString.split('-').map(Number);
+        
+        // Use Django's URL reverse mechanism in your JS (best practice)
+        // or a hardcoded path if necessary. We'll use a hardcoded path for simplicity here.
+        const url = `/slots/${year}/${month}/${day}/`; 
+        
+        window.location.href = url;
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,108 @@
+
+# OS & Editor Artifacts
+###
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+
+# Python & Django
+
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+env/
+ENV/
+*.egg-info/
+*.eggs/
+*.pyo
+*.pyd
+
+# Django-specific
+db.sqlite3
+*.log
+local_settings.py
+media/
+staticfiles/
+static_root/
+
+# Pipenv / Poetry
+Pipfile.lock
+poetry.lock
+
+
+# Node.js & Frontend
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+*.min.js
+*.min.css
+*.map
+
+# Bootstrap custom builds
+bootstrap-custom.css
+bootstrap-custom.js
+
+
+# Testing & Coverage
+
+coverage/
+htmlcov/
+*.cover
+*.lcov
+.cache/
+nosetests.xml
+coverage.xml
+*.mocha.json
+
+# Environment & Secrets
+
+.env
+.env.*
+*.secret
+*.key
+*.pem
+
+
+# Miscellaneous
+
+*.bak
+*.swp
+*.tmp
+*.orig
+*.old
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+*.log
+
+# Compiled files
+*.class
+*.o
+*.so
+
+# Package managers
+package-lock.json
+yarn.lock
+
+# System folders
+__MACOSX/
