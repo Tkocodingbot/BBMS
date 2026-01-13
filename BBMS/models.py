@@ -23,22 +23,24 @@ class TimeSlot(models.Model):
     
         
 class Booking(models.Model):
-    subject = models.CharField(max_length=100)
+    subject = models.CharField(max_length=200)
     slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
     boardroom = models.ForeignKey(Boardroom, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-
+    
+    
 class Attendee(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     email = models.EmailField()
+    is_external = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} ({'External' if self.is_external else 'Internal'})"
 
 
+                                                                                                                                                                                                                                                                                                                                                                
 
 
 

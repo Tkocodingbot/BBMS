@@ -1,0 +1,313 @@
+{% extends 'BBMS/base.html' %} {% block content %}{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BBMS</title>
+    <link rel="stylesheet" href="{% static 'BBMS/styles.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">BBMS</div>
+        <div class="sidebar-item">Dashboard</div>
+        <div class="sidebar-item active">Meetings</div>
+        <div class="sidebar-item">Calendar</div>
+        <div class="sidebar-item">Reports</div>
+        <div class="sidebar-item">Settings</div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="main-content">
+        <!-- Time Slot Picker -->
+        <div class="time-picker-container">
+          <div class="date-header">
+            <button type="button" id="prevDate">&lt;</button>
+            <span class="date-display" id="dateDisplay"
+              >Thu January 08 2026</span
+            >
+            <button type="button" id="nextDate">&gt;</button>
+          </div>
+
+          <div class="time-slots-grid" id="timeSlotsGrid">
+            <!-- Time slots will be generated here -->
+          </div>
+        </div>
+
+        <!-- Meeting Form -->
+        <div class="container">
+          <form id="meetingForm">
+            <!-- Subject -->
+            <div class="form-group">
+              <label for="subject">Subject:</label>
+              <input type="text" id="subject" placeholder="subject" />
+            </div>
+
+            <!-- Agenda -->
+            <div class="form-group textarea-group">
+              <label for="agenda">Agenda:</label>
+              <textarea id="agenda" placeholder="Write something.."></textarea>
+            </div>
+
+            <!-- Time -->
+            <div class="form-group">
+              <label for="time">Time:</label>
+              <input type="time" id="time" />
+            </div>
+
+            <!-- Date -->
+            <div class="form-group">
+              <label for="date">Date:</label>
+              <input type="date" id="date" />
+            </div>
+
+            <!-- Attendees Multi-Select -->
+            <div class="form-group">
+              <label>Attendees:</label>
+              <div class="multi-select" id="attendeesSelect">
+                <div class="select-display" id="selectDisplay">
+                  <span class="placeholder">Select attendees...</span>
+                </div>
+                <div class="dropdown-list" id="dropdownList">
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="chris" value="Chris" />
+                    <label for="chris">Chris</label>
+                  </div>
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="nokulunga" value="Nokulunga" />
+                    <label for="nokulunga">Nokulunga</label>
+                  </div>
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="mpumelelo" value="Mpumelelo" />
+                    <label for="mpumelelo">Mpumelelo</label>
+                  </div>
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="thabo" value="Thabo" />
+                    <label for="thabo">Thabo</label>
+                  </div>
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="sarah" value="Sarah" />
+                    <label for="sarah">Sarah</label>
+                  </div>
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="john" value="John" />
+                    <label for="john">John</label>
+                  </div>
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="linda" value="Linda" />
+                    <label for="linda">Linda</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Add_Attendee-->
+            <div class="form-group">
+              <label>External Attendees:</label>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <div
+                  id="externalAttendeesList"
+                  style="
+                    flex: 1;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    min-height: 40px;
+                    padding: 8px;
+                    background-color: #f9f9f9;
+                    border-radius: 4px;
+                    border: 1px solid #ddd;
+                  "
+                >
+                  <!-- External attendees will appear here as tags -->
+                </div>
+                <button
+                  type="button"
+                  id="addExternalBtn"
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background-color: #4f46e5;
+                    color: white;
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 24px;
+                    font-weight: bold;
+                    transition: all 0.2s;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                  "
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <!-- Modal for Adding External Email -->
+            <div
+              id="externalEmailModal"
+              style="
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div
+                style="
+                  background: white;
+                  border-radius: 8px;
+                  padding: 24px;
+                  width: 90%;
+                  max-width: 400px;
+                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <h3
+                    style="
+                      margin: 0;
+                      font-size: 18px;
+                      font-weight: 600;
+                      color: #333;
+                    "
+                  >
+                    Add External Email
+                  </h3>
+                  <button
+                    type="button"
+                    id="closeModalBtn"
+                    style="
+                      background: none;
+                      border: none;
+                      font-size: 24px;
+                      cursor: pointer;
+                      color: #999;
+                      padding: 0;
+                      width: 30px;
+                      height: 30px;
+                    "
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div style="margin-bottom: 20px">
+                  <label
+                    for="externalEmail"
+                    style="
+                      display: block;
+                      font-size: 14px;
+                      font-weight: 500;
+                      color: #555;
+                      margin-bottom: 8px;
+                    "
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    id="externalEmail"
+                    placeholder="attendee@external.com"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      border: 1px solid #ddd;
+                      border-radius: 4px;
+                      font-size: 14px;
+                      box-sizing: border-box;
+                    "
+                  />
+                  <p
+                    id="emailError"
+                    style="
+                      color: #dc2626;
+                      font-size: 12px;
+                      margin-top: 8px;
+                      display: none;
+                    "
+                  ></p>
+                </div>
+
+                <div style="display: flex; gap: 12px">
+                  <button
+                    type="button"
+                    id="cancelBtn"
+                    style="
+                      flex: 1;
+                      padding: 10px;
+                      border: 1px solid #ddd;
+                      background: white;
+                      border-radius: 4px;
+                      cursor: pointer;
+                      font-size: 14px;
+                      font-weight: 500;
+                    "
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    id="addEmailBtn"
+                    style="
+                      flex: 1;
+                      padding: 10px;
+                      background-color: #4f46e5;
+                      color: white;
+                      border: none;
+                      border-radius: 4px;
+                      cursor: pointer;
+                      font-size: 14px;
+                      font-weight: 500;
+                    "
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Apologies -->
+            <div class="form-group textarea-group">
+              <label for="apologies">Apologies:</label>
+              <textarea
+                id="apologies"
+                placeholder="Write something.."
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'BBMS/scripts.js' %}"></script>
+  </body>
+</html>
+{% endblock %}
