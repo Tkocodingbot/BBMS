@@ -1,0 +1,44 @@
+{% extends 'base.html' %} 
+Available Slots
+
+{% block content %}
+<h2>Select a Slot for {{ selected_date }}</h2>
+
+<style>
+    .slot-item {
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .available {
+        background-color: #e6ffe6; /* Light Green */
+        color: #006400; /* Dark Green text */
+    }
+    .booked {
+        background-color: #e0e0e0; /* Grey */
+        color: #707070; /* Darker Grey text */
+        cursor: not-allowed;
+    }
+</style>
+
+<div class="slot-list">
+    {% for slot in slots %}
+        {% if slot.is_booked %}
+            <div class="slot-item booked">
+                {{ slot.start_time }} - {{ slot.end_time }} (BOOKED)
+            </div>
+        {% else %}
+            <a href="{% url 'booking_form' date_str=slot.date_str start_time_str=slot.start_time %}" 
+               class="slot-item available">
+                {{ slot.start_time }} - {{ slot.end_time }} (AVAILABLE)
+            </a>
+        {% endif %}
+    {% empty %}
+        <p>No slots found for this date.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

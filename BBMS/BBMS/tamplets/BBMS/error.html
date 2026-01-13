@@ -1,0 +1,25 @@
+{% extends 'base.html' %} 
+
+{% block title %}Error Occurred{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 50px;">
+    <h1>Oops! Something Went Wrong.</h1>
+    
+    {% if message %}
+        <p style="font-size: 1.2em; color: #cc0000; border: 1px solid #ffcccc; padding: 15px; background-color: #fff0f0; display: inline-block; border-radius: 5px;">
+            **Error Details:** {{ message }}
+        </p>
+    {% else %}
+        <p style="font-size: 1.1em; color: #555;">
+            We encountered an unexpected issue while processing your request.
+        </p>
+    {% endif %}
+    
+    <p style="margin-top: 30px;">
+        <a href="{% url 'calendar' %}" style="text-decoration: none; padding: 10px 20px; background-color: #007bff; color: white; border-radius: 5px; transition: background-color 0.3s;">
+            Go back to Calendar
+        </a>
+    </p>
+</div>
+{% endblock %}
